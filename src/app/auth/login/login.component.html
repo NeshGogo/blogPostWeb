@@ -2,22 +2,23 @@
   <img src="assets/logo.png" alt="App Loge" />
 </figure>
 <mat-card>
-  <h2 class="mat-h2">Hi, please log in to the platform!</h2>
-  <form>
+  <h2 class="mat-h3">Hi, please log in to the platform!</h2>
+  <form [formGroup]="loginFrom" (ngSubmit)="login($event)">
     <div>
       <mat-form-field>
         <mat-label>Email</mat-label>
-        <input matInput type="email" />
+        <input matInput type="email" formControlName="email" />
+        <mat-error>Invalid email</mat-error>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input matInput type="password" />
+        <input matInput type="password" formControlName="password" />
+        <mat-error>This field is required</mat-error>
       </mat-form-field>
     </div>
-    <div>
-      <button mat-raised-button color="primary">Enter</button>
-    </div>
+    <mat-divider></mat-divider>
+    <button mat-raised-button color="primary" type="submit">Enter</button>
   </form>
 </mat-card>
