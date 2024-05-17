@@ -10,6 +10,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -31,12 +32,14 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required]),
   });
 
+  constructor(private authService: AuthService){}
+
   login(event:Event){
     event.preventDefault();
 
     if(this.loginFrom.invalid)
       return;
-
-    console.log(this.loginFrom.value);
+    const model = {...this.loginFrom.value};
+    this.authService.login(model.email as string, model.password as string);
   }
 }
