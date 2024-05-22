@@ -3,7 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider'
+import { MatDividerModule } from '@angular/material/divider';
 import {
   FormControl,
   FormGroup,
@@ -11,6 +11,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -32,14 +33,17 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private route: Router) {}
 
-  login(event:Event){
+  login(event: Event) {
     event.preventDefault();
 
-    if(this.loginFrom.invalid)
-      return;
-    const model = {...this.loginFrom.value};
-    this.authService.login(model.email as string, model.password as string);
+    if (this.loginFrom.invalid) return;
+    const model = { ...this.loginFrom.value };
+    this.authService
+      .login(model.email as string, model.password as string)
+      .subscribe({
+        next: () => this.route.navigate(['/home']),
+      });
   }
 }
