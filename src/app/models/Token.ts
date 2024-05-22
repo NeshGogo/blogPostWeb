@@ -1,4 +1,4 @@
 export interface Token {
-  token: string;
-  refreshToken: string;
+  token: string | null;
+  refreshToken: string | null; 
 }
