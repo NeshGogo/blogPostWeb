@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './login.component';
 
@@ -8,7 +10,10 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent]
+      imports: [LoginComponent, HttpClientTestingModule],
+      providers: [
+        provideAnimations(),
+      ]
     })
     .compileComponents();
     

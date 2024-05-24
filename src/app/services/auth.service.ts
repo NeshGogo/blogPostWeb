@@ -28,7 +28,7 @@ export class AuthService {
           resp.token as string,
           resp.refreshToken as string
         );
-        this.user.set(this.tokenService.decodeToken());
+        this.user.set(this.tokenService.decodeToken() as any);
       })
     );
   }
@@ -42,6 +42,6 @@ export class AuthService {
   private loadUser() {
     const token = this.tokenService.get();
     if (!token?.token) return;
-    this.user.set(this.tokenService.decodeToken());
+    this.user.set(this.tokenService.decodeToken() as any);
   }
 }
