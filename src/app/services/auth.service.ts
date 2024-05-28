@@ -22,7 +22,7 @@ export class AuthService {
       email,
       password,
     };
-    return this.http.post<Token>(this.API, body).pipe(
+    return this.http.post<Token>(`${this.API}/login`, body).pipe(
       tap((resp) => {
         this.tokenService.set(
           resp.token as string,
