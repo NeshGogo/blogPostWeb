@@ -1,0 +1,26 @@
+<mat-toolbar>
+  <figure>
+    <img src="assets/logo.png" alt="App Loge" />
+  </figure>
+  <form>
+    <mat-form-field class="example-full-width">
+      <mat-label>Search</mat-label>
+      <input
+        type="text"
+        placeholder="Are you looking for something?"
+        aria-label="search"
+        matInput
+        [formControl]="searchField"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        @for (option of filteredOptions | async; track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</mat-toolbar>
+<section>
+  <router-outlet></router-outlet>
+</section>
