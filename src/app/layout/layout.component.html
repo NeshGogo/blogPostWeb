@@ -3,13 +3,30 @@
     <figure>
       <img src="assets/logo.png" alt="App Loge" />
     </figure>
-    <a routerLink="/home" routerLinkActive="mat-primary" mat-button color="none" aria-label="Home navigation button">
+    <a
+      routerLink="/home"
+      routerLinkActive="mat-primary"
+      mat-button
+      color="none"
+      aria-label="Home navigation button"
+    >
       <mat-icon>home</mat-icon> Home
     </a>
-    <button mat-button color="none" aria-label="Create new content button">
+    <button
+      mat-button
+      color="none"
+      (click)="openPostCreationDialog()"
+      aria-label="Create new content button"
+    >
       <mat-icon>add_box</mat-icon> Create
     </button>
-    <a routerLink="/profile" routerLinkActive="mat-primary"  mat-button color="none" aria-label="Profile navigation button">
+    <a
+      routerLink="/profile"
+      routerLinkActive="mat-primary"
+      mat-button
+      color="none"
+      aria-label="Profile navigation button"
+    >
       <mat-icon>account_circle</mat-icon> Profile
     </a>
   </mat-drawer>
@@ -53,22 +70,18 @@
       >
         <mat-icon>home</mat-icon>
       </a>
-      <a
+      <button
         mat-icon-button
         color="none"
         aria-label="Create new content button"
+        (click)="openPostCreationDialog()"
       >
         <mat-icon>add_box</mat-icon>
-      </a>
-      <a
-        mat-icon-button
-        color="none"
-        aria-label="Profile navigation button"
-      >
+      </button>
+      <a mat-icon-button color="none" aria-label="Profile navigation button">
         <mat-icon>account_circle</mat-icon>
       </a>
     </mat-toolbar>
     }
   </mat-drawer-content>
 </mat-drawer-container>
-<main></main>
