@@ -1,26 +1,74 @@
-<mat-toolbar>
-  <figure>
-    <img src="assets/logo.png" alt="App Loge" />
-  </figure>
-  <form>
-    <mat-form-field class="example-full-width">
-      <mat-label>Search</mat-label>
-      <input
-        type="text"
-        placeholder="Are you looking for something?"
-        aria-label="search"
-        matInput
-        [formControl]="searchField"
-        [matAutocomplete]="auto"
-      />
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        @for (option of filteredOptions | async; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="desktopSize()">
+    <figure>
+      <img src="assets/logo.png" alt="App Loge" />
+    </figure>
+    <a routerLink="/home" routerLinkActive="mat-primary" mat-button color="none" aria-label="Home navigation button">
+      <mat-icon>home</mat-icon> Home
+    </a>
+    <button mat-button color="none" aria-label="Create new content button">
+      <mat-icon>add_box</mat-icon> Create
+    </button>
+    <a routerLink="/profile" routerLinkActive="mat-primary"  mat-button color="none" aria-label="Profile navigation button">
+      <mat-icon>account_circle</mat-icon> Profile
+    </a>
+  </mat-drawer>
+  <mat-drawer-content>
+    <section>
+      <mat-toolbar class="header">
+        @if (!desktopSize()) {
+        <figure>
+          <img src="assets/logo.png" alt="App Loge" />
+        </figure>
         }
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
-</mat-toolbar>
-<section>
-  <router-outlet></router-outlet>
-</section>
+
+        <form>
+          <mat-form-field class="example-full-width">
+            <mat-label> <mat-icon>search</mat-icon> Search</mat-label>
+            <input
+              type="text"
+              placeholder="Are you looking for something?"
+              aria-label="search"
+              matInput
+              [formControl]="searchField"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              @for (option of filteredOptions | async; track option) {
+              <mat-option [value]="option">{{ option }}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </section>
+    @if (!desktopSize()) {
+    <mat-toolbar class="buttom_toolbar">
+      <a
+        mat-icon-button
+        color="none"
+        routerLinkActive="mat-primary"
+        aria-label="Home navigation button"
+      >
+        <mat-icon>home</mat-icon>
+      </a>
+      <a
+        mat-icon-button
+        color="none"
+        aria-label="Create new content button"
+      >
+        <mat-icon>add_box</mat-icon>
+      </a>
+      <a
+        mat-icon-button
+        color="none"
+        aria-label="Profile navigation button"
+      >
+        <mat-icon>account_circle</mat-icon>
+      </a>
+    </mat-toolbar>
+    }
+  </mat-drawer-content>
+</mat-drawer-container>
+<main></main>
