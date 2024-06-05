@@ -11,6 +11,14 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
+  getAll(){
+    return this.http.get<Post[]>(this.API);
+  }
+
+  getById(id: string){
+    return this.http.get<Post>(`${this.API}/${id}`);
+  }
+
   post(data: PostForCreation) {
     const formData = new FormData();
     if (data.description) {
@@ -22,4 +30,9 @@ export class PostService {
     }
     return this.http.post<Post>(this.API, formData);
   }
+
+  update(id: string, description: string) {
+    return this.http.put<void>(`${this.API}/${id}`, {description});
+  }
+
 }
