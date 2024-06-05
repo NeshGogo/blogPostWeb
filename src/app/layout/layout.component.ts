@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, signal } from '@angular/core';
+import { Component, HostListener, OnInit, output, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -72,6 +72,10 @@ export class LayoutComponent implements OnInit {
 
   openPostCreationDialog() {
     const dialogRef = this.postCreationDialog.open(DialogForPostCreation);
+    dialogRef.componentInstance.onShared.subscribe(() => {
+      const value =  dialogRef.componentInstance.postFrom.value;
+      console.log(value);
+    });
   }
 
   private _filter(value: string): string[] {
@@ -123,7 +127,13 @@ export class LayoutComponent implements OnInit {
     <mat-divider></mat-divider>
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+      <button
+        mat-button
+        (click)="save($event)"
+        [mat-dialog-close]="true"
+        cdkFocusInitial
+        [disabled]="postFrom.invalid"
+      >
         Share
       </button>
     </mat-dialog-actions>
@@ -133,7 +143,7 @@ export class LayoutComponent implements OnInit {
       margin: 0;
       text-align: center;
     }
- 
+
     input {
       margin-bottom: 20px;
       text-align: center;
@@ -141,10 +151,17 @@ export class LayoutComponent implements OnInit {
   `,
 })
 export class DialogForPostCreation {
+  onShared = output();
   postFrom = new FormGroup({
     file: new FormControl('', [Validators.required]),
     description: new FormControl(''),
   });
+
+  save(event: Event) {
+    event.preventDefault();
+    if (this.postFrom.invalid) return;
+    this.onShared.emit();
+  }
 
   constructor(public dialogRef: MatDialogRef<DialogForPostCreation>) {}
 }
