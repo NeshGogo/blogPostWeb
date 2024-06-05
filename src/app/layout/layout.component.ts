@@ -24,6 +24,8 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { PostService } from '../services/post.service';
+import { PostForCreation } from '../models/Post';
 
 @Component({
   selector: 'app-layout',
@@ -52,7 +54,10 @@ export class LayoutComponent implements OnInit {
   filteredOptions: Observable<string[]> = of([]);
   desktopSize = signal<boolean>(window.innerWidth >= 1024);
 
-  constructor(public postCreationDialog: MatDialog) {}
+  constructor(
+    private postService: PostService,
+    public postCreationDialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.filteredOptions = this.searchField.valueChanges.pipe(
@@ -73,8 +78,14 @@ export class LayoutComponent implements OnInit {
   openPostCreationDialog() {
     const dialogRef = this.postCreationDialog.open(DialogForPostCreation);
     dialogRef.componentInstance.onShared.subscribe(() => {
-      const value =  dialogRef.componentInstance.postFrom.value;
-      console.log(value);
+      const value = dialogRef.componentInstance.postFrom.value;
+      const data: PostForCreation = {
+        files: value.files || [],
+        description: value.description || '',
+      }
+      this.postService.post(data).subscribe(post => {
+        console.log(post);
+      })
     });
   }
 
@@ -110,7 +121,8 @@ export class LayoutComponent implements OnInit {
           type="file"
           placeholder="Drag a photo here.."
           aria-label="Select a photo"
-          formControlName="file"
+          (change)="onFileChange($event)"
+          multiple
         />
 
         <mat-form-field>
@@ -153,7 +165,7 @@ export class LayoutComponent implements OnInit {
 export class DialogForPostCreation {
   onShared = output();
   postFrom = new FormGroup({
-    file: new FormControl('', [Validators.required]),
+    files: new FormControl<File[] | null>([], [Validators.required]),
     description: new FormControl(''),
   });
 
@@ -161,6 +173,13 @@ export class DialogForPostCreation {
     event.preventDefault();
     if (this.postFrom.invalid) return;
     this.onShared.emit();
+  }
+
+  onFileChange(event: any) {
+    event.preventDefault();
+
+    if (!event.target.files || event.target.files.length == 0) return;
+    this.postFrom.patchValue({ files: event.target.files });
   }
 
   constructor(public dialogRef: MatDialogRef<DialogForPostCreation>) {}
