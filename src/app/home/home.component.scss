@@ -1,5 +1,9 @@
 section {
   padding: 10px;
-  display: flex;
-  justify-content: center;
+}
+@media (min-width: 769px) {
+  section {
+    display: flex;
+    justify-content: center;
+  }
 }

@@ -27,11 +27,12 @@ export class HomeComponent implements OnInit {
           postId: 'qwewq12321',
           url: 'assets/logo.png',
           name: 'test',
-          contentType: 'image/png'
-        }
+          contentType: 'image/png',
+        },
       ],
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
       dateCreated: new Date(),
-    }
+    },
   ]);
 
   constructor(private postService: PostService) {}
@@ -41,6 +42,9 @@ export class HomeComponent implements OnInit {
   }
 
   fetchData(): void {
-    this.postService.getAll().subscribe((data) => this.posts.set(data));
+    this.postService.getAll().subscribe((data) => {
+      this.posts.set(data);
+      this.postService.posts.set(data);
+    });
   }
 }

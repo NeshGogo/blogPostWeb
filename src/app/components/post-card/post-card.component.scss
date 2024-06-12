@@ -7,3 +7,9 @@ mat-card-header{
     max-width: 100%;
   }
 }
+
+mat-card-content{
+  p {
+    margin-top: 5px;
+  }
+}

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Post, PostForCreation } from '../models/Post';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PostService {
   private readonly API = `${environment.api}/Posts`;
+  posts = signal<Post[]>([]);
 
   constructor(private http: HttpClient) {}
 
