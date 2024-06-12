@@ -1,1 +1,5 @@
-<p>home works!</p>
+<section>
+  @for (post of posts(); track $index) {
+    <app-post-card [post]="post"></app-post-card>
+  }
+</section>

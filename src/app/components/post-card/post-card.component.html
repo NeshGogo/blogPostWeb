@@ -1,0 +1,24 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <img
+        [src]="post()?.user?.userImageUrl"
+        alt="User picture that belong the post"
+      />
+    </div>
+    <mat-card-title>{{ post()?.user?.name }}</mat-card-title>
+    <mat-card-subtitle>{{ "@" + post()?.user?.userName }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  @for (attch of post()?.postAttachments; track $index) {
+  <img mat-card-image [src]="attch.url" alt="Post image" />
+  }
+  @if (post()?.description) {
+  <mat-card-content>
+    <mat-divider></mat-divider>
+    <p>
+      {{ post()?.description }}
+    </p>
+  </mat-card-content>
+  }
+</mat-card>
