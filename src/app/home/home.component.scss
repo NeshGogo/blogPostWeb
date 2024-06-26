@@ -1,9 +1,13 @@
 section {
   padding: 10px;
 }
+app-post-card{
+  margin-bottom: 10px;
+}
 @media (min-width: 769px) {
   section {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 }
