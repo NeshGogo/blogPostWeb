@@ -2,7 +2,7 @@
   <mat-card-header>
     <div mat-card-avatar>
       <img
-        [src]="post()?.user?.userImageUrl"
+        [src]="post()?.user?.userImageUrl || 'assets/default-user.jpeg'"
         alt="User picture that belong the post"
       />
     </div>
