@@ -1,6 +1,7 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TokenService } from '../services/token.service';
+import { catchError, throwError } from 'rxjs';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const tokenService = inject(TokenService);
@@ -10,5 +11,12 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
       headers: req.headers.set('authorization', `bearer ${tokenModel?.token}`),
     });
   }
-  return next(req);
+  return next(req).pipe(
+    catchError((err) => {
+      if (err.status === 401) {
+        tokenService.remove();
+      }
+      return throwError(() => err);
+    })
+  );
 };
