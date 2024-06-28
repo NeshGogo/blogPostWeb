@@ -58,7 +58,9 @@
           </mat-form-field>
         </form>
       </mat-toolbar>
-      <router-outlet></router-outlet>
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
     </section>
     @if (!desktopSize()) {
     <mat-toolbar class="buttom_toolbar">
