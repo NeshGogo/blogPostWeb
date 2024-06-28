@@ -63,6 +63,8 @@
     @if (!desktopSize()) {
     <mat-toolbar class="buttom_toolbar">
       <a
+        routerLink="/home"
+        routerLinkActive="mat-primary"
         mat-icon-button
         color="none"
         routerLinkActive="mat-primary"
@@ -78,7 +80,13 @@
       >
         <mat-icon>add_box</mat-icon>
       </button>
-      <a mat-icon-button color="none" aria-label="Profile navigation button">
+      <a
+        mat-icon-button
+        routerLink="/profile"
+        routerLinkActive="mat-primary"
+        color="none"
+        aria-label="Profile navigation button"
+      >
         <mat-icon>account_circle</mat-icon>
       </a>
     </mat-toolbar>
