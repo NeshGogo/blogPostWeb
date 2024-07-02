@@ -1,1 +1,8 @@
-<p>profile works!</p>
+<mat-divider></mat-divider>
+<mat-grid-list cols="3" rowHeight="2:1.5">
+  @for (post of posts(); track $index) {
+  <mat-grid-tile>
+    <img [src]="post.postAttachments[0]?.url" onerror="this.src='assets/default_post.jpg'" alt="post image created by user" />
+  </mat-grid-tile>
+  }
+</mat-grid-list>
