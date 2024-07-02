@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [MatIconModule, MatButtonModule],
   template: `
     <div class="carousel">
-      <img [src]="images()[currentIndex()]" alt="Carousel image" />
+      <img [src]="images()[currentIndex()]" onerror="this.src='assets/default-post.jpg'" alt="Carousel image" />
       @if (images().length > 1) {
       <button
         class="btn-prev"

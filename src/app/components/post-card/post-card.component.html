@@ -2,7 +2,8 @@
   <mat-card-header>
     <div mat-card-avatar>
       <img
-        [src]="post()?.user?.userImageUrl || 'assets/default-user.jpeg'"
+        [src]="post()?.user?.userImageUrl"
+        onerror="this.src='assets/default-user.jpeg'"
         alt="User picture that belong the post"
       />
     </div>
@@ -11,7 +12,7 @@
   </mat-card-header>
   <mat-divider></mat-divider>
 
-  <app-carousel [images]="images()"></app-carousel>
+  <app-carousel [images]="images()" onerror="this.src='assets/default-post.jpg'"></app-carousel>
 
   @if (post()?.description) {
   <mat-divider></mat-divider>
