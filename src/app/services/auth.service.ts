@@ -28,7 +28,7 @@ export class AuthService {
           resp.token as string,
           resp.refreshToken as string
         );
-        this.user.set(this.tokenService.decodeToken() as any);
+        this.loadUser();
       })
     );
   }
@@ -42,6 +42,14 @@ export class AuthService {
   private loadUser() {
     const token = this.tokenService.get();
     if (!token?.token) return;
-    this.user.set(this.tokenService.decodeToken() as any);
+    const decoded = this.tokenService.decodeToken() as any;
+    const user: User = 
+    {
+      userName: decoded.UserName,
+      name: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+      email: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/email'],
+      id: decoded.Id
+    }
+    this.user.set(user);
   }
 }
