@@ -84,7 +84,7 @@ export class LayoutComponent implements OnInit {
         description: value.description || '',
       }
       this.postService.post(data).subscribe(post => {
-        console.log(post);
+        this.postService.posts.set([post, ...this.postService.posts()]);
       })
     });
   }

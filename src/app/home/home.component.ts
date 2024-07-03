@@ -43,8 +43,8 @@ export class HomeComponent implements OnInit {
 
   fetchData(): void {
     this.postService.getAll().subscribe((data) => {
-      this.posts.set(data);
       this.postService.posts.set(data);
+      this.posts = this.postService.posts;
     });
   }
 }
