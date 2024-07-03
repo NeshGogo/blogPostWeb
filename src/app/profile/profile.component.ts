@@ -22,7 +22,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.fetchData();
     this.user = this.auth.user;
-    console.log(this.user());
   }
 
   fetchData(): void {

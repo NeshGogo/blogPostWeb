@@ -20,7 +20,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
       if (err.status === 401 && tokenModel?.token && tokenService.isTokenExpired()) {
         return tokenService.refreshToken().pipe(
           switchMap((newtoken) => {
-            console.log('Expired');
             req = req.clone({
               headers: req.headers.set(
                 'authorization',
