@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { Router } from '@angular/router';
     MatButtonModule,
     ReactiveFormsModule,
     MatDividerModule,
+    MatIconModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -32,7 +34,7 @@ export class LoginComponent {
     email: new FormControl('', [Validators.email, Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
-
+  hidePassword = signal(true);
   constructor(private authService: AuthService, private route: Router) {}
 
   login(event: Event) {
@@ -45,5 +47,11 @@ export class LoginComponent {
       .subscribe({
         next: () => this.route.navigate(['/home']),
       });
+  }
+
+  onClickHide(event: Event){
+    event.preventDefault();
+    this.hidePassword.set(!this.hidePassword());
+    event.stopPropagation();
   }
 }
