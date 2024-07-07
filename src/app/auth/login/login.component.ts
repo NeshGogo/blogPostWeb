@@ -13,6 +13,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatDividerModule,
     MatIconModule,
+    MatSnackBarModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -35,7 +37,11 @@ export class LoginComponent {
     password: new FormControl('', [Validators.required]),
   });
   hidePassword = signal(true);
-  constructor(private authService: AuthService, private route: Router) {}
+  constructor(
+    private authService: AuthService,
+    private route: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   login(event: Event) {
     event.preventDefault();
@@ -46,10 +52,22 @@ export class LoginComponent {
       .login(model.email as string, model.password as string)
       .subscribe({
         next: () => this.route.navigate(['/home']),
+        error: (err) => {
+          ''.startsWith
+          if (err?.status.toString().startsWith('4')) {
+            this.snackBar.open(err?.error?.message, undefined, {
+              duration: 5000,
+            });
+          } else {
+            this.snackBar.open('Oops! Something went wrong. Please give it another shot.', undefined, {
+              duration: 5000,
+            });
+          }
+        },
       });
   }
 
-  onClickHide(event: Event){
+  onClickHide(event: Event) {
     event.preventDefault();
     this.hidePassword.set(!this.hidePassword());
     event.stopPropagation();
