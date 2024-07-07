@@ -14,6 +14,7 @@ export interface PostAttachment {
   url: string;
   name: string;
   contentType: string;
+  createdDate: Date;
 }
 
 export interface PostForCreation {

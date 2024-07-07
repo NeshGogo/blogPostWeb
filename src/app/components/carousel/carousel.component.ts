@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -5,10 +6,17 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-carousel',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, NgOptimizedImage],
   template: `
     <div class="carousel">
-      <img [src]="images()[currentIndex()]" onerror="this.src='assets/default-post.jpg'" alt="Carousel image" />
+      <img
+        [ngSrc]="images()[currentIndex()] || 'assets/default-post.jpg'"
+        width="500"
+        height="500"
+        onerror="this.src='assets/default-post.jpg'"
+        alt="Carousel image"
+        priority
+      />
       @if (images().length > 1) {
       <button
         class="btn-prev"

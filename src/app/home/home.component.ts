@@ -11,29 +11,7 @@ import { PostCardComponent } from '../components/post-card/post-card.component';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  posts = signal<Post[]>([
-    {
-      id: 'qwewq12321',
-      userId: '232112',
-      user: {
-        id: '2112312',
-        name: 'test name',
-        userName: 'neshtest',
-        userImageUrl: 'assets/logo.png',
-        email: 'neshgogo@test.com',
-      },
-      postAttachments: [
-        {
-          postId: 'qwewq12321',
-          url: 'assets/logo.png',
-          name: 'test',
-          contentType: 'image/png',
-        },
-      ],
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      dateCreated: new Date(),
-    },
-  ]);
+  posts = signal<Post[]>([]);
 
   constructor(private postService: PostService) {}
 

@@ -5,11 +5,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { PostService } from '../services/post.service';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/User';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatGridListModule, MatDividerModule],
+  imports: [MatGridListModule, MatDividerModule, NgOptimizedImage],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })

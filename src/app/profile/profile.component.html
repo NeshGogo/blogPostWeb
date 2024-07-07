@@ -1,5 +1,5 @@
 <section>
-  <figure >
+  <figure>
     <img
       [src]="this.user()?.userImageUrl"
       onerror="this.src='assets/default-user.jpeg'"
@@ -7,13 +7,13 @@
     />
   </figure>
   <div>
-    <h2>{{this.user()?.userName}}</h2>
+    <h2>{{ this.user()?.userName }}</h2>
     <div class="statistics">
-      <p>{{posts().length}} posts</p>
-      <p>{{0}} followers</p>
-      <p>{{0}} following</p>
+      <p>{{ posts().length }} posts</p>
+      <p>{{ 0 }} followers</p>
+      <p>{{ 0 }} following</p>
     </div>
-    <h4>{{this.user()?.name}}</h4>
+    <h4>{{ this.user()?.name }}</h4>
   </div>
 </section>
 
@@ -21,7 +21,13 @@
 <mat-grid-list class="posts" cols="3" rowHeight="2:1.5">
   @for (post of posts(); track $index) {
   <mat-grid-tile>
-    <img [src]="post.postAttachments[0]?.url" onerror="this.src='assets/default-post.jpg'" alt="post image created by user" />
+    <img
+      [ngSrc]="post.postAttachments[0]?.url || 'assets/default-post.jpg'"
+      onerror="this.src='assets/default-post.jpg'"
+      alt="post image created by user"
+      fill
+      priority
+    />
   </mat-grid-tile>
   }
 </mat-grid-list>
