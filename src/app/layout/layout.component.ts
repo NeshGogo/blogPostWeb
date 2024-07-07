@@ -26,6 +26,7 @@ import {
 import { MatDividerModule } from '@angular/material/divider';
 import { PostService } from '../services/post.service';
 import { PostForCreation } from '../models/Post';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-layout',
@@ -44,6 +45,7 @@ import { PostForCreation } from '../models/Post';
     MatSidenavModule,
     RouterLink,
     RouterLinkActive,
+    MatSnackBarModule,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
@@ -56,6 +58,7 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private postService: PostService,
+    private snackBar: MatSnackBar,
     public postCreationDialog: MatDialog
   ) {}
 
@@ -82,10 +85,13 @@ export class LayoutComponent implements OnInit {
       const data: PostForCreation = {
         files: value.files || [],
         description: value.description || '',
-      }
-      this.postService.post(data).subscribe(post => {
+      };
+      this.postService.post(data).subscribe((post) => {
         this.postService.posts.set([post, ...this.postService.posts()]);
-      })
+        this.snackBar.open('Post published successfully', undefined, {
+          duration: 5000,
+        });
+      });
     });
   }
 
