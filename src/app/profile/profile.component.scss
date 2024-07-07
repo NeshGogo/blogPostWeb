@@ -37,3 +37,11 @@ section {
     }
   }
 }
+
+.mat-grid-tile-img-container{
+  mat-icon{
+    position:absolute;
+    top: 5px;
+    right: 5px;
+  }
+}

@@ -6,11 +6,17 @@ import { PostService } from '../services/post.service';
 import { AuthService } from '../services/auth.service';
 import { User } from '../models/User';
 import { NgOptimizedImage } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatGridListModule, MatDividerModule, NgOptimizedImage],
+  imports: [
+    MatGridListModule,
+    MatDividerModule,
+    NgOptimizedImage,
+    MatIconModule,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
