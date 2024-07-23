@@ -22,4 +22,24 @@
     </p>
   </mat-card-content>
   }
+  <mat-card-footer>
+    <mat-form-field>
+      <mat-label>Add comment</mat-label>
+      <input  matInput
+      type="text"
+      placeholder="Write a comment to your friend...."
+      [formControl]="commentForm" />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        [disabled]="commentForm.value?.trim()?.length == 0"
+        (click)="addComment($event)"
+        [attr.aria-label]="'Send comment'"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+      <mat-error>This field is required</mat-error>
+    </mat-form-field>
+  </mat-card-footer>
 </mat-card>

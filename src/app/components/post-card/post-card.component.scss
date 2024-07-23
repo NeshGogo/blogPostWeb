@@ -18,6 +18,14 @@ mat-card-content{
   }
 }
 
+mat-card-footer{
+  margin-top: 10px;
+  margin-bottom: -18px;
+    mat-form-field{
+      width: 100%;
+    }
+}
+
 @media (min-width: 768px) {
   mat-card {
     width: 500px;

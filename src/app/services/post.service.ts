@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Post, PostForCreation } from '../models/Post';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { CommentForCreation } from '../models/Comment';
 
 @Injectable({
   providedIn: 'root',
@@ -36,4 +37,7 @@ export class PostService {
     return this.http.put<void>(`${this.API}/${id}`, {description});
   }
 
+  addComment(id: string, comment: CommentForCreation){
+    return this.http.post<Comment>(`${this.API}/${id}/comments`, comment);
+  }
 }
