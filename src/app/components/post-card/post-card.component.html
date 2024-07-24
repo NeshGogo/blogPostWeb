@@ -25,6 +25,13 @@
       >
         <mat-icon>{{post()?.liked? 'favorite' : 'favorite_outline'}}</mat-icon>
       </button>
+      <button
+        type="button"
+        mat-icon-button
+        [attr.aria-label]="'See comments'"
+      >
+        <mat-icon>comment_outline</mat-icon>
+      </button>
   </mat-card-actions>
   <mat-divider></mat-divider>
   <mat-card-content>
