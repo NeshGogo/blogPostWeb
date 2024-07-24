@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, signal } from '@angular/core';
+import { Component, OnInit, inject, input, output, signal } from '@angular/core';
 import { Post } from '../../models/Post';
 import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -30,6 +30,7 @@ export class PostCardComponent implements OnInit {
   post = input<Post>();
   images = signal<string[]>([]);
   commentForm = new FormControl('');
+  onLiked = output<string>();
 
   constructor(private service: PostService, private snackBar: MatSnackBar) {}
 
@@ -50,6 +51,12 @@ export class PostCardComponent implements OnInit {
       this.snackBar.open('Comment added✔️', undefined, {
         duration: 5000,
       });
+    });
+  }
+
+  handleLike(){
+    this.service.addOrRemoveLike(<string>this.post()?.id).subscribe(() => {
+      this.onLiked.emit(<string>this.post()?.id);
     });
   }
 }

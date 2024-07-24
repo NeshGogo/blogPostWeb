@@ -5,6 +5,7 @@ export interface Post {
   userId: string;
   description?: string;
   postAttachments: PostAttachment[];
+  liked: boolean;
   dateCreated: Date;
   user?: User;
 }

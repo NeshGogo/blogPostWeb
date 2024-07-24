@@ -16,10 +16,22 @@
 
   @if (post()?.description) {
   <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button
+        type="button"
+        mat-icon-button
+        [attr.aria-label]="'like'"
+        (click)="handleLike()"
+      >
+        <mat-icon>{{post()?.liked? 'favorite' : 'favorite_outline'}}</mat-icon>
+      </button>
+  </mat-card-actions>
+  <mat-divider></mat-divider>
   <mat-card-content>
     <p>
       <b>{{post()?.user?.name}}</b> {{ post()?.description }}
     </p>
+    <button mat-button>View all comments</button>
   </mat-card-content>
   }
   <mat-card-footer>

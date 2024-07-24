@@ -25,4 +25,12 @@ export class HomeComponent implements OnInit {
       this.posts = this.postService.posts;
     });
   }
+
+  handleLike(id: string){
+    this.posts.update(posts => {
+      const index = posts.findIndex(p => p.id === id);
+      posts[index].liked = !posts[index].liked;
+      return posts;
+    });
+  }
 }

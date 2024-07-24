@@ -1,5 +1,5 @@
 <section>
   @for (post of posts(); track $index) {
-    <app-post-card [post]="post"></app-post-card>
+    <app-post-card [post]="post" (onLiked)="handleLike($event)"></app-post-card>
   }
 </section>

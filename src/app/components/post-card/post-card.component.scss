@@ -16,14 +16,20 @@ mat-card-content{
   p {
     margin-top: 5px;
   }
+  button{
+    margin-left: -9px;
+  }
 }
 
 mat-card-footer{
-  margin-top: 10px;
   margin-bottom: -18px;
     mat-form-field{
       width: 100%;
     }
+}
+
+mat-card-actions{
+  padding: 3px;
 }
 
 @media (min-width: 768px) {

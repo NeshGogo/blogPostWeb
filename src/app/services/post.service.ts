@@ -40,4 +40,8 @@ export class PostService {
   addComment(id: string, comment: CommentForCreation){
     return this.http.post<Comment>(`${this.API}/${id}/comments`, comment);
   }
+
+  addOrRemoveLike(id:string){
+    return this.http.patch<void>(`${this.API}/${id}/likes`, {});
+  }
 }
