@@ -31,10 +31,12 @@
     <p>
       <b>{{post()?.user?.name}}</b> {{ post()?.description }}
     </p>
-    <button mat-button>View all comments</button>
+    @if(post()?.amountOfComments != 0 ){
+      <button mat-button>View all {{post()?.amountOfComments}} comments</button>
+    }
   </mat-card-content>
   }
-  <mat-card-footer>
+  <mat-card-footer [class]="post()?.amountOfComments != 0? '' :'mt-5'">
     <mat-form-field>
       <mat-label>Add comment</mat-label>
       <input  matInput

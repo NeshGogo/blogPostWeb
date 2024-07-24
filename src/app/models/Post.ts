@@ -6,6 +6,7 @@ export interface Post {
   description?: string;
   postAttachments: PostAttachment[];
   liked: boolean;
+  amountOfComments: number;
   dateCreated: Date;
   user?: User;
 }
