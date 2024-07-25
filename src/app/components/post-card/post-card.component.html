@@ -17,6 +17,7 @@
   @if (post()?.description) {
   <mat-divider></mat-divider>
   <mat-card-actions>
+    <p><strong>{{post()?.amountOfLikes || 0}}</strong><small> likes</small></p>
     <button
         type="button"
         mat-icon-button

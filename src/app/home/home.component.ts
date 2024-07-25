@@ -30,6 +30,11 @@ export class HomeComponent implements OnInit {
     this.posts.update(posts => {
       const index = posts.findIndex(p => p.id === id);
       posts[index].liked = !posts[index].liked;
+      if(posts[index].liked){
+        posts[index].amountOfLikes++;
+      }else {
+        posts[index].amountOfLikes--;
+      }
       return posts;
     });
   }

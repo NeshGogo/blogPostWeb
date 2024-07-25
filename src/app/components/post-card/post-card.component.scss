@@ -15,6 +15,7 @@ mat-card-header{
 mat-card-content{
   p {
     margin-top: 5px;
+    margin-right: -100px;
   }
   button{
     margin-left: -9px;
@@ -30,6 +31,9 @@ mat-card-footer{
 
 mat-card-actions{
   padding: 3px;
+  p{
+    margin: 0;
+  }
 }
 
 @media (min-width: 768px) {
