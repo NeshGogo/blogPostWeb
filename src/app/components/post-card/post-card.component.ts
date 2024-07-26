@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { Post } from '../../models/Post';
 import { MatCardModule } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
@@ -10,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommentForCreation } from '../../models/Comment';
 import { PostService } from '../../services/post.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogPostDetailComponent } from '../dialog-post-detail/dialog-post-detail.component';
 
 @Component({
   selector: 'app-post-card',
@@ -32,7 +41,11 @@ export class PostCardComponent implements OnInit {
   commentForm = new FormControl('');
   onLiked = output<string>();
 
-  constructor(private service: PostService, private snackBar: MatSnackBar) {}
+  constructor(
+    private service: PostService,
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.images.set(
@@ -54,9 +67,17 @@ export class PostCardComponent implements OnInit {
     });
   }
 
-  handleLike(){
+  handleLike() {
     this.service.addOrRemoveLike(<string>this.post()?.id).subscribe(() => {
       this.onLiked.emit(<string>this.post()?.id);
+    });
+  }
+
+  openDialog(){
+    const dialogRef = this.dialog.open(DialogPostDetailComponent, {
+      data: {
+        id: <string>this.post()?.id
+      }
     });
   }
 }

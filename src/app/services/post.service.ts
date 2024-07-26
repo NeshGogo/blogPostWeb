@@ -13,12 +13,16 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(me = false, following = false){
+  getAll(me = false, following = false) {
     return this.http.get<Post[]>(`${this.API}?me=${me}&following=${following}`);
   }
 
-  getById(id: string){
+  getById(id: string) {
     return this.http.get<Post>(`${this.API}/${id}`);
+  }
+
+  getComments(id: string) {
+    return this.http.get<Comment>(`${this.API}/${id}/comments`);
   }
 
   post(data: PostForCreation) {
@@ -34,14 +38,14 @@ export class PostService {
   }
 
   update(id: string, description: string) {
-    return this.http.put<void>(`${this.API}/${id}`, {description});
+    return this.http.put<void>(`${this.API}/${id}`, { description });
   }
 
-  addComment(id: string, comment: CommentForCreation){
+  addComment(id: string, comment: CommentForCreation) {
     return this.http.post<Comment>(`${this.API}/${id}/comments`, comment);
   }
 
-  addOrRemoveLike(id:string){
+  addOrRemoveLike(id: string) {
     return this.http.patch<void>(`${this.API}/${id}/likes`, {});
   }
 }

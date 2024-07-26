@@ -17,40 +17,48 @@
   @if (post()?.description) {
   <mat-divider></mat-divider>
   <mat-card-actions>
-    <p><strong>{{post()?.amountOfLikes || 0}}</strong><small> likes</small></p>
+    <p>
+      <strong>{{ post()?.amountOfLikes || 0 }}</strong
+      ><small> likes</small>
+    </p>
     <button
-        type="button"
-        mat-icon-button
-        [attr.aria-label]="'like'"
-        (click)="handleLike()"
-      >
-        <mat-icon>{{post()?.liked? 'favorite' : 'favorite_outline'}}</mat-icon>
-      </button>
-      <button
-        type="button"
-        mat-icon-button
-        [attr.aria-label]="'See comments'"
-      >
-        <mat-icon>comment_outline</mat-icon>
-      </button>
+      type="button"
+      mat-icon-button
+      [attr.aria-label]="'like'"
+      (click)="handleLike()"
+    >
+      <mat-icon>{{ post()?.liked ? "favorite" : "favorite_outline" }}</mat-icon>
+    </button>
+    <button
+      type="button"
+      mat-icon-button
+      [attr.aria-label]="'See comments'"
+      (click)="openDialog()"
+    >
+      <mat-icon>comment_outline</mat-icon>
+    </button>
   </mat-card-actions>
   <mat-divider></mat-divider>
   <mat-card-content>
     <p>
-      <b>{{post()?.user?.name}}</b> {{ post()?.description }}
+      <b>{{ post()?.user?.name }}</b> {{ post()?.description }}
     </p>
     @if(post()?.amountOfComments != 0 ){
-      <button mat-button>View all {{post()?.amountOfComments}} comments</button>
+    <button mat-button (click)="openDialog()">
+      View all {{ post()?.amountOfComments }} comments
+    </button>
     }
   </mat-card-content>
   }
-  <mat-card-footer [class]="post()?.amountOfComments != 0? '' :'mt-5'">
+  <mat-card-footer [class]="post()?.amountOfComments != 0 ? '' : 'mt-5'">
     <mat-form-field>
       <mat-label>Add comment</mat-label>
-      <input  matInput
-      type="text"
-      placeholder="Write a comment to your friend...."
-      [formControl]="commentForm" />
+      <input
+        matInput
+        type="text"
+        placeholder="Write a comment to your friend...."
+        [formControl]="commentForm"
+      />
       <button
         type="button"
         mat-icon-button
