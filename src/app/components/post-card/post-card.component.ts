@@ -76,7 +76,10 @@ export class PostCardComponent implements OnInit {
   openDialog(){
     const dialogRef = this.dialog.open(DialogPostDetailComponent, {
       data: {
-        id: <string>this.post()?.id
+        id: <string>this.post()?.id,
+        handleLike: this.handleLike,
+        addComment: this.addComment,
+        commentForm:this.commentForm,
       }
     });
   }

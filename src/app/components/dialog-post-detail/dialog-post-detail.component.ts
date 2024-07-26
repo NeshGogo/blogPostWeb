@@ -12,6 +12,10 @@ import { MatCardModule } from '@angular/material/card';
 import { CommentComponent } from '../comment/comment.component';
 import { Comment } from '../../models/Comment';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-dialog-post-detail',
@@ -24,12 +28,16 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDialogContainer,
     CommentComponent,
     MatDividerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './dialog-post-detail.component.html',
   styleUrl: './dialog-post-detail.component.scss',
 })
 export class DialogPostDetailComponent implements OnInit {
-  private readonly data = inject<{ id: string }>(MAT_DIALOG_DATA);
+  public readonly data = inject<{ id: string, handleLike: () =>{}, addComment: (event:Event) =>{}, commentForm: FormControl }>(MAT_DIALOG_DATA);
   private readonly postService = inject(PostService);
   post = signal<Post | null>(null);
   images = signal<string[]>([]);
@@ -54,4 +62,6 @@ export class DialogPostDetailComponent implements OnInit {
       this.comments.set(comments);
     });
   }
+
+
 }

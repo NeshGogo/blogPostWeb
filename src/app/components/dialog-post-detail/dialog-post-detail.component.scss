@@ -2,8 +2,36 @@
   display: flex;
   padding: 0;
   overflow: hidden;
-  section{
+
+  section {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .comments {
+      padding: 5px 16px;
+      overflow-y: scroll;
+      height: 93%;
+      mat-divider {
+        margin-bottom: 5px;
+        margin-top: -10px;
+      }
+    }
+
+    .footer {
+      mat-card-actions{
+        padding: 3px;
+        p{
+          margin: 0;
+        }
+      }
+
+      mat-form-field {
+        width: 100%;
+        margin-bottom: -18px;
+      }
+    }
   }
 
   app-carousel {
@@ -22,11 +50,6 @@
     }
   }
 
-  .comments{
-    padding: 5px 16px;
-    mat-divider {
-      margin-bottom: 5px;
-      margin-top: -10px;
-    }
-  }
+
+
 }
