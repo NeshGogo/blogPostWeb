@@ -12,5 +12,15 @@
       <mat-card-title>{{ post()?.user?.name }}</mat-card-title>
       <mat-card-subtitle>{{ "@" + post()?.user?.userName }}</mat-card-subtitle>
     </mat-card-header>
+    <mat-divider></mat-divider>
+    <div class="comments">
+      <p>
+        <b>{{ post()?.user?.name }}</b> {{ post()?.description }}
+      </p>
+      @for (comment of comments(); track $index) {
+        <app-comment [comment]="comment"></app-comment>
+        <mat-divider></mat-divider>
+      }
+    </div>
   </section>
 </mat-dialog-content>

@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
 import { Comment } from '../../models/Comment';
-import { MatCardAvatar, MatCardModule } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [MatCardAvatar],
+  imports: [MatCardModule],
   template: `
     <div class="comment">
       <div mat-card-avatar>
@@ -23,7 +23,12 @@ import { MatCardAvatar, MatCardModule } from '@angular/material/card';
   styles: `
     .comment{
       display: flex;
-      aling-items: center;
+      align-items: center;
+      div {
+        overflow: hidden;
+        margin-buttom: 0px;
+        margin-right: 5px;
+      }
       img {
         max-width: 100%;
         height: 100%;

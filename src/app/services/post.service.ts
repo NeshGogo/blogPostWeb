@@ -3,7 +3,7 @@ import { Post, PostForCreation } from '../models/Post';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CommentForCreation } from '../models/Comment';
-
+import { Comment } from '../models/Comment';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,7 +22,7 @@ export class PostService {
   }
 
   getComments(id: string) {
-    return this.http.get<Comment>(`${this.API}/${id}/comments`);
+    return this.http.get<Comment[]>(`${this.API}/${id}/comments`);
   }
 
   post(data: PostForCreation) {
