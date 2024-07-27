@@ -38,4 +38,12 @@ export class HomeComponent implements OnInit {
       return posts;
     });
   }
+
+  handleComment(id: string){
+    this.posts.update(posts => {
+      const index = posts.findIndex(p => p.id === id);
+      posts[index].amountOfComments++;
+      return posts;
+    });
+  }
 }

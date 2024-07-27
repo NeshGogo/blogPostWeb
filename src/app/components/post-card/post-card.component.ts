@@ -40,6 +40,7 @@ export class PostCardComponent implements OnInit {
   images = signal<string[]>([]);
   commentForm = new FormControl('');
   onLiked = output<string>();
+  onComment = output<string>();
 
   constructor(
     private service: PostService,
@@ -76,11 +77,16 @@ export class PostCardComponent implements OnInit {
   openDialog(){
     const dialogRef = this.dialog.open(DialogPostDetailComponent, {
       data: {
-        id: <string>this.post()?.id,
-        handleLike: this.handleLike,
-        addComment: this.addComment,
-        commentForm:this.commentForm,
+        id: <string>this.post()?.id
       }
     });
+
+    dialogRef.componentInstance.onLiked.subscribe(() => {
+      this.onLiked.emit(<string>this.post()?.id);
+    })
+
+    dialogRef.componentInstance.onComment.subscribe(() => {
+      this.onComment.emit(<string>this.post()?.id);
+    })
   }
 }
