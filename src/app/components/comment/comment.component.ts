@@ -1,14 +1,13 @@
 import { Component, input } from '@angular/core';
 import { Comment } from '../../models/Comment';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [],
   template: `
     <div class="comment">
-      <div mat-card-avatar>
+      <div class="avatar">
         <img
           [src]="comment()?.user?.userImageUrl"
           onerror="this.src='assets/default-user.jpeg'"

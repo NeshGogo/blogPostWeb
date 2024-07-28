@@ -20,7 +20,7 @@
 <mat-divider></mat-divider>
 <mat-grid-list class="posts" cols="3" rowHeight="2:1.5">
   @for (post of posts(); track $index) {
-  <mat-grid-tile>
+  <mat-grid-tile (click)="openPost(post.id)">
     <div class="mat-grid-tile-img-container">
       <img
         [ngSrc]="post.postAttachments[0]?.url || 'assets/default-post.jpg'"

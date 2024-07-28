@@ -1,68 +1,70 @@
-<mat-dialog-content class="container">
-  <app-carousel [images]="images()"></app-carousel>
-  <section>
-    <div>
-      <mat-card-header>
-        <div mat-card-avatar>
-          <img
-            [src]="post()?.user?.userImageUrl"
-            onerror="this.src='assets/default-user.jpeg'"
-            alt="User picture that belong the post"
-          />
-        </div>
-        <mat-card-title>{{ post()?.user?.name }}</mat-card-title>
-        <mat-card-subtitle>{{
-          "@" + post()?.user?.userName
-        }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-divider></mat-divider>
-      <div class="comments">
-        <p>
-          <b>{{ post()?.user?.name }}</b> {{ post()?.description }}
-        </p>
-        @for (comment of comments(); track $index) {
-        <app-comment [comment]="comment"></app-comment>
+<mat-card>
+  <mat-dialog-content class="container">
+    <app-carousel [images]="images()"></app-carousel>
+    <section>
+      <div>
+        <mat-card-header>
+          <div mat-card-avatar>
+            <img
+              [src]="post()?.user?.userImageUrl"
+              onerror="this.src='assets/default-user.jpeg'"
+              alt="User picture that belong the post"
+            />
+          </div>
+          <mat-card-title>{{ post()?.user?.name }}</mat-card-title>
+          <mat-card-subtitle>{{
+            "@" + post()?.user?.userName
+          }}</mat-card-subtitle>
+        </mat-card-header>
         <mat-divider></mat-divider>
-        }
+        <div class="comments">
+          <p>
+            <b>{{ post()?.user?.name }}</b> {{ post()?.description }}
+          </p>
+          @for (comment of comments(); track $index) {
+          <app-comment [comment]="comment"></app-comment>
+          <mat-divider></mat-divider>
+          }
+        </div>
       </div>
-    </div>
-    <div class="footer">
-      <mat-divider></mat-divider>
-      <mat-card-actions>
-        <p>
-          <strong>{{ post()?.amountOfLikes || 0 }}</strong
-          ><small> likes</small>
-        </p>
-        <button
-          type="button"
-          mat-icon-button
-          [attr.aria-label]="'like'"
-          (click)="handleLike()"
-        >
-          <mat-icon>{{
-            post()?.liked ? "favorite" : "favorite_outline"
-          }}</mat-icon>
-        </button>
-      </mat-card-actions>
-      <mat-form-field>
-        <mat-label>Add comment</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Write a comment to your friend...."
-          [formControl]="commentForm"
-        />
-        <button
-          type="button"
-          mat-icon-button
-          matSuffix
-          [disabled]="commentForm.value?.trim()?.length == 0"
-          (click)="addComment()"
-          [attr.aria-label]="'Send comment'"
-        >
-          <mat-icon>send</mat-icon>
-        </button>
-      </mat-form-field>
-    </div>
-  </section>
-</mat-dialog-content>
+      <div class="footer">
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+          <p>
+            <strong>{{ post()?.amountOfLikes || 0 }}</strong
+            ><small> likes</small>
+          </p>
+          <button
+            type="button"
+            mat-icon-button
+            [attr.aria-label]="'like'"
+            (click)="handleLike()"
+          >
+            <mat-icon>{{
+              post()?.liked ? "favorite" : "favorite_outline"
+            }}</mat-icon>
+          </button>
+        </mat-card-actions>
+        <mat-form-field>
+          <mat-label>Add comment</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Write a comment to your friend...."
+            [formControl]="commentForm"
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            [disabled]="commentForm.value?.trim()?.length == 0"
+            (click)="addComment()"
+            [attr.aria-label]="'Send comment'"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    </section>
+  </mat-dialog-content>
+</mat-card>
