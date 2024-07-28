@@ -8,9 +8,9 @@
   </figure>
   <div>
     <h2>{{ this.user()?.userName }}</h2>
-    @if (!isAuthUserProfile()) {
+    @if (!isAuthUserProfile() && !isFollowing) {
       <button mat-flat-button>Follow</button>
-    } @else if(!isAuthUserProfile()) {
+    } @else if(!isAuthUserProfile() && isFollowing) {
       <button mat-stroked-button>Following</button>
     }
     <div class="statistics">

@@ -10,7 +10,7 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  API = `${environment.api}/accounts`;
+  private readonly API = `${environment.api}/accounts`;
   user = signal<User | null>(null);
 
   constructor(private http: HttpClient, private tokenService: TokenService) {

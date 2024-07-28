@@ -12,6 +12,7 @@ import { DialogPostDetailComponent } from '../components/dialog-post-detail/dial
 import { MatButtonModule } from '@angular/material/button';
 import { FollowService } from '../services/follow.service';
 import { UserFollowing } from '../models/UserFollowing';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -29,26 +30,33 @@ import { UserFollowing } from '../models/UserFollowing';
 export class ProfileComponent implements OnInit {
   @Input()
   set id(userId: string) {
-    if(this.auth.user()?.id === userId){
-      this.user = this.auth.user;
-    }
+    this.isAuthUserProfile.set(userId === this.auth.user()?.id);
+    this.userService.getUserById(userId).subscribe((user) => {
+      this.user.set(user);
+    });
   }
   posts = signal<Post[]>([]);
   user = signal<User | null>(null);
-  isAuthUserProfile = signal(true);
+  isAuthUserProfile = signal(false);
   following = signal<UserFollowing[]>([]);
   followers = signal<UserFollowing[]>([]);
+
+  public get isFollowing(): boolean {
+    return this.followers().some(
+      (p) => p.followingUserId === this.auth.user()?.id
+    );
+  }
 
   constructor(
     private postService: PostService,
     private auth: AuthService,
     private matDialog: MatDialog,
     private followService: FollowService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.fetchData();
-    //this.user = this.auth.user;
     this.fetchFollowers();
     this.fetchFollowing();
   }
@@ -60,22 +68,22 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  openPost(id: string){
+  openPost(id: string) {
     this.matDialog.open(DialogPostDetailComponent, {
       data: {
-        id
-      }
+        id,
+      },
     });
   }
 
-  fetchFollowing(){
-    this.followService.getFollowing().subscribe(following => {
+  fetchFollowing() {
+    this.followService.getFollowing().subscribe((following) => {
       this.following.set(following);
     });
   }
 
-  fetchFollowers(){
-    this.followService.getFollowing(false).subscribe(following => {
+  fetchFollowers() {
+    this.followService.getFollowing(false).subscribe((following) => {
       this.followers.set(following);
     });
   }
