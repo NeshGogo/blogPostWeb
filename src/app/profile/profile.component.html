@@ -8,6 +8,11 @@
   </figure>
   <div>
     <h2>{{ this.user()?.userName }}</h2>
+    @if (!isAuthUserProfile()) {
+      <button mat-flat-button>Follow</button>
+    } @else if(!isAuthUserProfile()) {
+      <button mat-stroked-button>Following</button>
+    }
     <div class="statistics">
       <p>{{ posts().length }} posts</p>
       <p>{{ 0 }} followers</p>

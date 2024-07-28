@@ -9,6 +9,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogPostDetailComponent } from '../components/dialog-post-detail/dialog-post-detail.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,7 @@ import { DialogPostDetailComponent } from '../components/dialog-post-detail/dial
     MatDividerModule,
     NgOptimizedImage,
     MatIconModule,
+    MatButtonModule,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -25,6 +27,7 @@ import { DialogPostDetailComponent } from '../components/dialog-post-detail/dial
 export class ProfileComponent implements OnInit {
   posts = signal<Post[]>([]);
   user = signal<User | null>(null);
+  isAuthUserProfile = signal(true);
 
   constructor(
     private postService: PostService,
