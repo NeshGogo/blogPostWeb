@@ -87,4 +87,20 @@ export class ProfileComponent implements OnInit {
       this.followers.set(following);
     });
   }
+
+  follow(){
+    this.followService.addFollowing(<string>this.user()?.id).subscribe(followUser => {
+      this.followers.update(values => [followUser, ...values]);
+    })
+  }
+
+  unfollow(){
+    this.followService.removeFollowing(<string>this.user()?.id).subscribe(() => {
+      this.followers.update(values => {
+        const index = values.findIndex((val: UserFollowing) => val.userId ===  this.user()?.id)
+        values.splice(index, 1);
+        return values;
+      });
+    })
+  }
 }
