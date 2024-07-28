@@ -51,8 +51,16 @@
               [matAutocomplete]="auto"
             />
             <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              @for (option of filteredOptions | async; track option) {
-              <mat-option [value]="option">{{ option }}</mat-option>
+              @for (option of options(); track option) {
+              <mat-option [value]="option">
+                <a routerLink="/profile/{{option.id}}">
+                  <div>
+                    <p>{{ option.name }}</p>
+                    <p><b><small>{{ '@' + option.userName }}</small></b></p>
+                  </div>
+                </a>
+              </mat-option>
+              <mat-divider></mat-divider>
               }
             </mat-autocomplete>
           </mat-form-field>

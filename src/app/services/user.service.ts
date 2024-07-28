@@ -11,11 +11,11 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers() {
-    return this.http.get<User[]>(this.API);
+  getUsers(val: string | null = null) {
+    return this.http.get<User[]>(`${this.API}${val ? '?search=' + val : ''}`);
   }
 
-  getUserById(id:string){
+  getUserById(id: string) {
     return this.http.get<User>(`${this.API}/${id}`);
   }
 }

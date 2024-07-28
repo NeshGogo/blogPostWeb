@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { Observable, map, of, startWith } from 'rxjs';
+import { map, startWith, tap } from 'rxjs';
 import {
   MatDialog,
   MatDialogActions,
@@ -29,6 +29,7 @@ import { PostForCreation } from '../models/Post';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { User } from '../models/User';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-layout',
@@ -48,14 +49,14 @@ import { AuthService } from '../services/auth.service';
     RouterLink,
     RouterLinkActive,
     MatSnackBarModule,
+    MatDividerModule,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit {
   searchField = new FormControl('');
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]> = of([]);
+  options = signal<User[]>([]);
   desktopSize = signal<boolean>(window.innerWidth >= 1024);
   user = signal<User | null>(null);
 
@@ -63,14 +64,18 @@ export class LayoutComponent implements OnInit {
     private postService: PostService,
     private snackBar: MatSnackBar,
     private authService: AuthService,
-    public postCreationDialog: MatDialog
+    private userService: UserService,
+    public postCreationDialog: MatDialog,
   ) {}
 
   ngOnInit() {
-    this.filteredOptions = this.searchField.valueChanges.pipe(
-      startWith(''),
+    this.searchField.valueChanges.pipe(
       map((value) => this._filter(value || ''))
-    );
+    ).subscribe(obsUsers => {
+      obsUsers.subscribe(users => {
+        this.options.set(users);
+      })
+    });
     this.user = this.authService.user;
   }
 
@@ -100,12 +105,9 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
+  private _filter(value: string) {
+    console.log('enter');
+    return this.userService.getUsers(value);
   }
 }
 
