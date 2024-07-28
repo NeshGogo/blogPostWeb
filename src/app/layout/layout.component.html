@@ -21,7 +21,7 @@
       <mat-icon>add_box</mat-icon> Create
     </button>
     <a
-      routerLink="/profile"
+      routerLink="/profile/{{user()?.id || ''}}"
       routerLinkActive="mat-primary"
       mat-button
       color="none"
@@ -84,7 +84,7 @@
       </button>
       <a
         mat-icon-button
-        routerLink="/profile"
+        routerLink="/profile/{{user()?.id || ''}}"
         routerLinkActive="mat-primary"
         color="none"
         aria-label="Profile navigation button"

@@ -30,7 +30,7 @@ export const routes: Routes = [
         component: HomeComponent,
       },
       {
-        path: 'profile',
+        path: 'profile/:id',
         component: ProfileComponent,
       }
     ]

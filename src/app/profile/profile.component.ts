@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import { Post } from '../models/Post';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogPostDetailComponent } from '../components/dialog-post-detail/dialog-post-detail.component';
 import { MatButtonModule } from '@angular/material/button';
+import { FollowService } from '../services/follow.service';
+import { UserFollowing } from '../models/UserFollowing';
 
 @Component({
   selector: 'app-profile',
@@ -25,19 +27,30 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
+  @Input()
+  set id(userId: string) {
+    if(this.auth.user()?.id === userId){
+      this.user = this.auth.user;
+    }
+  }
   posts = signal<Post[]>([]);
   user = signal<User | null>(null);
   isAuthUserProfile = signal(true);
+  following = signal<UserFollowing[]>([]);
+  followers = signal<UserFollowing[]>([]);
 
   constructor(
     private postService: PostService,
     private auth: AuthService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private followService: FollowService,
   ) {}
 
   ngOnInit(): void {
     this.fetchData();
-    this.user = this.auth.user;
+    //this.user = this.auth.user;
+    this.fetchFollowers();
+    this.fetchFollowing();
   }
 
   fetchData(): void {
@@ -52,6 +65,18 @@ export class ProfileComponent implements OnInit {
       data: {
         id
       }
+    });
+  }
+
+  fetchFollowing(){
+    this.followService.getFollowing().subscribe(following => {
+      this.following.set(following);
+    });
+  }
+
+  fetchFollowers(){
+    this.followService.getFollowing(false).subscribe(following => {
+      this.followers.set(following);
     });
   }
 }

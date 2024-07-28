@@ -27,6 +27,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { PostService } from '../services/post.service';
 import { PostForCreation } from '../models/Post';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { User } from '../models/User';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -55,10 +57,12 @@ export class LayoutComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]> = of([]);
   desktopSize = signal<boolean>(window.innerWidth >= 1024);
+  user = signal<User | null>(null);
 
   constructor(
     private postService: PostService,
     private snackBar: MatSnackBar,
+    private authService: AuthService,
     public postCreationDialog: MatDialog
   ) {}
 
@@ -67,6 +71,7 @@ export class LayoutComponent implements OnInit {
       startWith(''),
       map((value) => this._filter(value || ''))
     );
+    this.user = this.authService.user;
   }
 
   @HostListener('window:resize', ['$event'])
