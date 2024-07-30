@@ -27,12 +27,13 @@ import { UserService } from '../services/user.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent {
   @Input()
   set id(userId: string) {
     this.isAuthUserProfile.set(userId === this.auth.user()?.id);
     this.userService.getUserById(userId).subscribe((user) => {
       this.user.set(user);
+      this.init();
     });
   }
   posts = signal<Post[]>([]);
@@ -55,14 +56,14 @@ export class ProfileComponent implements OnInit {
     private userService: UserService
   ) {}
 
-  ngOnInit(): void {
+  init() {
     this.fetchData();
     this.fetchFollowers();
     this.fetchFollowing();
   }
 
   fetchData(): void {
-    this.postService.getAll(true).subscribe((data) => {
+    this.postService.getAll(false, false, this.user()?.id).subscribe((data) => {
       this.postService.posts.set(data);
       this.posts = this.postService.posts;
     });
@@ -77,30 +78,36 @@ export class ProfileComponent implements OnInit {
   }
 
   fetchFollowing() {
-    this.followService.getFollowing().subscribe((following) => {
+    this.followService.getFollowing(<string>this.user()?.id).subscribe((following) => {
       this.following.set(following);
     });
   }
 
   fetchFollowers() {
-    this.followService.getFollowing(false).subscribe((following) => {
+    this.followService.getFollowing(<string>this.user()?.id, false).subscribe((following) => {
       this.followers.set(following);
     });
   }
 
-  follow(){
-    this.followService.addFollowing(<string>this.user()?.id).subscribe(followUser => {
-      this.followers.update(values => [followUser, ...values]);
-    })
+  follow() {
+    this.followService
+      .addFollowing(<string>this.user()?.id)
+      .subscribe((followUser) => {
+        this.followers.update((values) => [followUser, ...values]);
+      });
   }
 
-  unfollow(){
-    this.followService.removeFollowing(<string>this.user()?.id).subscribe(() => {
-      this.followers.update(values => {
-        const index = values.findIndex((val: UserFollowing) => val.userId ===  this.user()?.id)
-        values.splice(index, 1);
-        return values;
+  unfollow() {
+    this.followService
+      .removeFollowing(<string>this.user()?.id)
+      .subscribe(() => {
+        this.followers.update((values) => {
+          const index = values.findIndex(
+            (val: UserFollowing) => val.userId === this.user()?.id
+          );
+          values.splice(index, 1);
+          return values;
+        });
       });
-    })
   }
 }

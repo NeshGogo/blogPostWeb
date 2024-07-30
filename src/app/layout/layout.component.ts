@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { map, startWith, tap } from 'rxjs';
+import { map, debounceTime } from 'rxjs';
 import {
   MatDialog,
   MatDialogActions,
@@ -70,6 +70,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     this.searchField.valueChanges.pipe(
+      debounceTime(500),
       map((value) => this._filter(value || ''))
     ).subscribe(obsUsers => {
       obsUsers.subscribe(users => {
@@ -106,7 +107,6 @@ export class LayoutComponent implements OnInit {
   }
 
   private _filter(value: string) {
-    console.log('enter');
     return this.userService.getUsers(value);
   }
 }

@@ -4,22 +4,26 @@ import { HttpClient } from '@angular/common/http';
 import { UserFollowing } from '../models/UserFollowing';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FollowService {
   private readonly API = `${environment.api}/Follows`;
 
   constructor(private http: HttpClient) {}
 
-  getFollowing(following = true) {
-    return this.http.get<UserFollowing[]>(`${this.API}/following?following=${following}`);
+  getFollowing(userId: string, following = true) {
+    return this.http.get<UserFollowing[]>(
+      `${this.API}/following/${userId}?following=${following}`
+    );
   }
 
-  addFollowing(userId: string){
-    return this.http.post<UserFollowing>(`${this.API}/following`, {followingUserId: userId});
+  addFollowing(userId: string) {
+    return this.http.post<UserFollowing>(`${this.API}/following`, {
+      followingUserId: userId,
+    });
   }
 
-  removeFollowing(userId: string){
+  removeFollowing(userId: string) {
     return this.http.delete<void>(`${this.API}/unfollow/${userId}`);
   }
 }

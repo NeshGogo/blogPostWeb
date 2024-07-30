@@ -13,8 +13,9 @@ export class PostService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(me = false, following = false) {
-    return this.http.get<Post[]>(`${this.API}?me=${me}&following=${following}`);
+  getAll(me = false, following = false, userId: string | null = null) {
+    const userIdQuery = userId? `&userId=${userId}` : '';
+    return this.http.get<Post[]>(`${this.API}?me=${me}&following=${following}${userIdQuery}`);
   }
 
   getById(id: string) {
