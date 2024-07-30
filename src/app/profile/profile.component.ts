@@ -41,12 +41,7 @@ export class ProfileComponent {
   isAuthUserProfile = signal(false);
   following = signal<UserFollowing[]>([]);
   followers = signal<UserFollowing[]>([]);
-
-  public get isFollowing(): boolean {
-    return this.followers().some(
-      (p) => p.followingUserId === this.auth.user()?.id
-    );
-  }
+  isFollowing = signal(false);
 
   constructor(
     private postService: PostService,
@@ -86,6 +81,9 @@ export class ProfileComponent {
   fetchFollowers() {
     this.followService.getFollowing(<string>this.user()?.id, false).subscribe((following) => {
       this.followers.set(following);
+      this.isFollowing.set(following.some(
+        (p) => p.userId === this.auth.user()?.id
+      ));
     });
   }
 
@@ -95,6 +93,7 @@ export class ProfileComponent {
       .subscribe((followUser) => {
         this.followers.update((values) => [followUser, ...values]);
       });
+    this.isFollowing.set(true);
   }
 
   unfollow() {
@@ -109,5 +108,6 @@ export class ProfileComponent {
           return values;
         });
       });
+      this.isFollowing.set(false);
   }
 }
