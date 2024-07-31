@@ -30,6 +30,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { User } from '../models/User';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import imageCompression from 'browser-image-compression';
 
 @Component({
   selector: 'app-layout',
@@ -65,18 +66,20 @@ export class LayoutComponent implements OnInit {
     private snackBar: MatSnackBar,
     private authService: AuthService,
     private userService: UserService,
-    public postCreationDialog: MatDialog,
+    public postCreationDialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.searchField.valueChanges.pipe(
-      debounceTime(500),
-      map((value) => this._filter(value || ''))
-    ).subscribe(obsUsers => {
-      obsUsers.subscribe(users => {
-        this.options.set(users);
-      })
-    });
+    this.searchField.valueChanges
+      .pipe(
+        debounceTime(500),
+        map((value) => this._filter(value || ''))
+      )
+      .subscribe((obsUsers) => {
+        obsUsers.subscribe((users) => {
+          this.options.set(users);
+        });
+      });
     this.user = this.authService.user;
   }
 
@@ -134,6 +137,7 @@ export class LayoutComponent implements OnInit {
           type="file"
           placeholder="Drag a photo here.."
           aria-label="Select a photo"
+          accept="image/*"
           (change)="onFileChange($event)"
           multiple
         />
@@ -155,7 +159,6 @@ export class LayoutComponent implements OnInit {
       <button
         mat-button
         (click)="save($event)"
-        [mat-dialog-close]="true"
         cdkFocusInitial
         [disabled]="postFrom.invalid"
       >
@@ -192,7 +195,34 @@ export class DialogForPostCreation {
     event.preventDefault();
 
     if (!event.target.files || event.target.files.length == 0) return;
-    this.postFrom.patchValue({ files: event.target.files });
+    const files = event.target.files;
+    //this.postFrom.patchValue({ files });
+    this.compressImage(files).then((compressedFiles) => {
+      this.postFrom.patchValue({ files: compressedFiles });
+    });
+  }
+
+  async compressImage(files: File[]): Promise<File[]> {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+      maxIteration: 10,
+      initialQuality: 1,
+      alwaysKeepResolution: true,
+    };
+
+    try {
+      const result: File[] = [];
+      for (let file of files) {
+        const compressedFile = await imageCompression(file, options);
+        result.push(new File([compressedFile], file.name, { type: file.type }));
+      }
+      return result;
+    } catch (error) {
+      console.error('Compression error:', error);
+      throw error;
+    }
   }
 
   constructor(public dialogRef: MatDialogRef<DialogForPostCreation>) {}
