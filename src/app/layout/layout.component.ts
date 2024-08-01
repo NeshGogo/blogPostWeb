@@ -30,7 +30,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { User } from '../models/User';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-import imageCompression from 'browser-image-compression';
+import { NgxImageCompressService, UploadResponse } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-layout',
@@ -127,20 +127,17 @@ export class LayoutComponent implements OnInit {
     MatDialogContent,
     MatDialogActions,
     MatButtonModule,
+    MatIconModule,
   ],
   template: `
     <h4 mat-dialog-title>Create new post</h4>
     <mat-divider></mat-divider>
     <mat-dialog-content>
       <form [formGroup]="postFrom">
-        <input
-          type="file"
-          placeholder="Drag a photo here.."
-          aria-label="Select a photo"
-          accept="image/*"
-          (change)="onFileChange($event)"
-          multiple
-        />
+        <button mat-stroked-button color="primary" (click)="uploadAndResize()">
+          <mat-icon>upload_file</mat-icon>
+          Upload images
+        </button>
 
         <mat-form-field>
           <mat-label>Description</mat-label>
@@ -159,6 +156,7 @@ export class LayoutComponent implements OnInit {
       <button
         mat-button
         (click)="save($event)"
+        [mat-dialog-close]="true"
         cdkFocusInitial
         [disabled]="postFrom.invalid"
       >
@@ -176,6 +174,11 @@ export class LayoutComponent implements OnInit {
       margin-bottom: 20px;
       text-align: center;
     }
+    form{
+      button{
+        margin-right: 10px;
+      }
+    }
   `,
 })
 export class DialogForPostCreation {
@@ -185,45 +188,59 @@ export class DialogForPostCreation {
     description: new FormControl(''),
   });
 
+  constructor(
+    public dialogRef: MatDialogRef<DialogForPostCreation>,
+    private imageCompress: NgxImageCompressService
+  ) {}
+
   save(event: Event) {
     event.preventDefault();
     if (this.postFrom.invalid) return;
     this.onShared.emit();
   }
 
-  onFileChange(event: any) {
-    event.preventDefault();
-
-    if (!event.target.files || event.target.files.length == 0) return;
-    const files = event.target.files;
-    //this.postFrom.patchValue({ files });
-    this.compressImage(files).then((compressedFiles) => {
-      this.postFrom.patchValue({ files: compressedFiles });
-    });
+  uploadAndResize() {
+    return this.imageCompress
+      .uploadMultipleFiles()
+      .then((uploadResponses: UploadResponse[]) => {
+        return uploadResponses.map((uploadResponse) => {
+          return this.imageCompress.compressFile(
+            uploadResponse.image,
+            uploadResponse.orientation,
+            50,
+            50,
+            500,
+            500
+          );
+        });
+      })
+      .then((results) => {
+        Promise.all(results).then((imagesBase64) => {
+          const files = imagesBase64.map((imageBase64, index) =>
+            this.base64ToFile(imageBase64, `image${index + 1}.jpeg`)
+          );
+          this.postFrom.patchValue({ files });
+        });
+      });
   }
 
-  async compressImage(files: File[]): Promise<File[]> {
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-      maxIteration: 10,
-      initialQuality: 1,
-      alwaysKeepResolution: true,
-    };
+  base64ToFile(base64String: string, fileName: string): File {
+    // Extract the MIME type and Base64 data from the string
+    const arr = base64String.split(',');
+    const mimeMatch = arr[0].match(/:(.*?);/);
+    const mime = mimeMatch ? mimeMatch[1] : 'application/octet-stream';
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
 
-    try {
-      const result: File[] = [];
-      for (let file of files) {
-        const compressedFile = await imageCompression(file, options);
-        result.push(new File([compressedFile], file.name, { type: file.type }));
-      }
-      return result;
-    } catch (error) {
-      console.error('Compression error:', error);
-      throw error;
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-  }
 
-  constructor(public dialogRef: MatDialogRef<DialogForPostCreation>) {}
+    // Create a Blob from the Uint8Array
+    const blob = new Blob([u8arr], { type: mime });
+
+    // Convert Blob to File
+    return new File([blob], fileName, { type: mime });
+  }
 }
