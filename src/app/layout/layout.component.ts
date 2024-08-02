@@ -101,7 +101,10 @@ export class LayoutComponent implements OnInit {
         description: value.description || '',
       };
       this.postService.post(data).subscribe((post) => {
-        this.postService.posts.set([post, ...this.postService.posts()]);
+        this.postService.posts.update((values) => {
+          values.unshift(post);
+          return values;
+        });
         this.snackBar.open('Post published successfully', undefined, {
           duration: 5000,
         });
@@ -208,7 +211,7 @@ export class DialogForPostCreation {
             uploadResponse.image,
             uploadResponse.orientation,
             50,
-            50,
+            80,
             500,
             500
           );

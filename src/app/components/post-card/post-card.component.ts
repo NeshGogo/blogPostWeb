@@ -1,10 +1,10 @@
 import {
   Component,
   OnInit,
+  computed,
   inject,
   input,
   output,
-  signal,
 } from '@angular/core';
 import { Post } from '../../models/Post';
 import { MatCardModule } from '@angular/material/card';
@@ -35,9 +35,9 @@ import { DialogPostDetailComponent } from '../dialog-post-detail/dialog-post-det
   templateUrl: './post-card.component.html',
   styleUrl: './post-card.component.scss',
 })
-export class PostCardComponent implements OnInit {
+export class PostCardComponent {
   post = input<Post>();
-  images = signal<string[]>([]);
+  images = computed(() => this.post()?.postAttachments.map((attch) => attch.url) || []);
   commentForm = new FormControl('');
   onLiked = output<string>();
   onComment = output<string>();
@@ -47,12 +47,6 @@ export class PostCardComponent implements OnInit {
     private snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
-
-  ngOnInit(): void {
-    this.images.set(
-      this.post()?.postAttachments.map((attch) => attch.url) || []
-    );
-  }
 
   addComment(event: Event) {
     event.preventDefault();
