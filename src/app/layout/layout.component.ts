@@ -31,6 +31,7 @@ import { User } from '../models/User';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { NgxImageCompressService, UploadResponse } from 'ngx-image-compress';
+import { AiService } from '../services/ai.service';
 
 @Component({
   selector: 'app-layout',
@@ -152,6 +153,15 @@ export class LayoutComponent implements OnInit {
           ></textarea>
         </mat-form-field>
       </form>
+      @if (this.postFrom.value.files && this.postFrom.value.files.length > 0) {
+      <div class="actions">
+        <mat-divider></mat-divider>
+        <button mat-stroked-button color="accent" (click)="generateCaption()">
+          <mat-icon>scatter_plot</mat-icon>
+          Generate image caption
+        </button>
+      </div>
+      }
     </mat-dialog-content>
     <mat-divider></mat-divider>
     <mat-dialog-actions align="end">
@@ -182,6 +192,13 @@ export class LayoutComponent implements OnInit {
         margin-right: 10px;
       }
     }
+    .actions{
+      margin-top: -15px;
+     text-align: center;
+     button{
+      margin-top: 5px;
+     }
+    }
   `,
 })
 export class DialogForPostCreation {
@@ -193,7 +210,8 @@ export class DialogForPostCreation {
 
   constructor(
     public dialogRef: MatDialogRef<DialogForPostCreation>,
-    private imageCompress: NgxImageCompressService
+    private imageCompress: NgxImageCompressService,
+    private aiService: AiService
   ) {}
 
   save(event: Event) {
@@ -245,5 +263,15 @@ export class DialogForPostCreation {
 
     // Convert Blob to File
     return new File([blob], fileName, { type: mime });
+  }
+
+  generateCaption() {
+    const files = this.postFrom.value.files;
+    if (!files) return;
+    this.aiService
+      .generateImageCaption(files[0])
+      .subscribe((caption) =>
+        this.postFrom.patchValue({ description: caption })
+      );
   }
 }

@@ -10,9 +10,9 @@ export class AiService {
 
   constructor(private http: HttpClient) { }
 
-  GenerateImageCaption(file: File){
+  generateImageCaption(file: File){
     const body = new FormData();
     body.set('file', file);
-    return this.http.post<string>(this.API, body);
+    return this.http.post<string>(`${this.API}/text/ImageCaption`, body);
   }
 }
