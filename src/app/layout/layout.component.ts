@@ -138,20 +138,33 @@ export class LayoutComponent implements OnInit {
     <mat-divider></mat-divider>
     <mat-dialog-content>
       <form [formGroup]="postFrom">
-        <button mat-stroked-button color="primary" (click)="uploadAndResize()">
-          <mat-icon>upload_file</mat-icon>
-          Upload images
-        </button>
-
-        <mat-form-field>
-          <mat-label>Description</mat-label>
-          <textarea
-            matInput
-            rows="10"
-            placeholder="Add a description to the post"
-            formControlName="description"
-          ></textarea>
-        </mat-form-field>
+        <div>
+          <button
+            mat-stroked-button
+            color="primary"
+            (click)="uploadAndResize()"
+          >
+            <mat-icon>upload_file</mat-icon>
+            Upload images
+          </button>
+          <div class="uploaded_images">
+            <mat-divider></mat-divider>
+            @for (image of images(); track $index) {
+            <img [src]="image" width="50" height="45" />
+            }
+          </div>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              rows="10"
+              placeholder="Add a description to the post"
+              formControlName="description"
+            ></textarea>
+          </mat-form-field>
+        </div>
       </form>
       @if (this.postFrom.value.files && this.postFrom.value.files.length > 0) {
       <div class="actions">
@@ -188,16 +201,29 @@ export class LayoutComponent implements OnInit {
       text-align: center;
     }
     form{
+      display: flex;
+      align-items: center;
       button{
+        width: 100%;
         margin-right: 10px;
+      }
+      .uploaded_images{
+        margin-top: 5px;
+        img{
+          margin-right: 2px;
+        }
+      }
+
+      div:first-child{
+        margin-right: 5px;
       }
     }
     .actions{
       margin-top: -15px;
-     text-align: center;
-     button{
-      margin-top: 5px;
-     }
+      text-align: center;
+      button{
+        margin-top: 5px;
+      }
     }
   `,
 })
@@ -207,6 +233,7 @@ export class DialogForPostCreation {
     files: new FormControl<File[] | null>([], [Validators.required]),
     description: new FormControl(''),
   });
+  images = signal<string[]>([]);
 
   constructor(
     public dialogRef: MatDialogRef<DialogForPostCreation>,
@@ -237,6 +264,7 @@ export class DialogForPostCreation {
       })
       .then((results) => {
         Promise.all(results).then((imagesBase64) => {
+          this.images.set(imagesBase64);
           const files = imagesBase64.map((imageBase64, index) =>
             this.base64ToFile(imageBase64, `image${index + 1}.jpeg`)
           );
