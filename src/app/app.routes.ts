@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { LayoutComponent } from './layout/layout.component';
 import { ProfileComponent } from './profile/profile.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,10 @@ export const routes: Routes = [
         path:'login',
         component: LoginComponent
       },
+      {
+        path: 'sign_up',
+        component: SignUpComponent
+      }
     ]
   },
   {

@@ -1,0 +1,32 @@
+:host{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  height: 90%;
+}
+figure {
+  text-align: center;
+  img {
+    max-width: 250px;
+  }
+  margin: 10px;
+  margin-bottom: -40px;
+}
+
+mat-card {
+  padding: 10px;
+  max-width: 500px;
+  width: 100%;
+  mat-form-field{
+    width: 100%;
+  }
+  button {
+    width: 100%;
+  }
+}
+
+mat-divider{
+  margin-bottom: 5px;
+}

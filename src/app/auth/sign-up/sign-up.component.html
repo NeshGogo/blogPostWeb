@@ -1,0 +1,100 @@
+<figure>
+  <img [src]="logoUrl" alt="App Loge" />
+</figure>
+<mat-card>
+  <h2 class="mat-h3">Hi, please sign up to the platform!</h2>
+  <form [formGroup]="signUpForm" (ngSubmit)="signUp($event)">
+    <div>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput type="text" formControlName="name" />
+        @if (name.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+        @if (name.hasError('maxlength')) {
+          <mat-error>The maximum characters is 50.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>User Name</mat-label>
+        <input matInput type="text" formControlName="userName" />
+        @if (userName.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+        @if (userName.hasError('maxlength')) {
+          <mat-error>The maximum characters is 20.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        @if (email.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+        @if (email.hasError('maxlength')) {
+          <mat-error>The maximum characters is 50.</mat-error>
+        }
+        @if (email.hasError('email')) {
+          <mat-error>The email is invalid.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          formControlName="password"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="onHidePassword($event)"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword()"
+        >
+          <mat-icon>{{
+            hidePassword() ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          [type]="hideConfirmPassword() ? 'password' : 'text'"
+          formControlName="confirmPassword"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="onHideConfirmPassword($event)"
+          [attr.aria-label]="'Hide confirm password'"
+          [attr.aria-pressed]="hideConfirmPassword()"
+        >
+          <mat-icon>{{
+            hideConfirmPassword() ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        @if (confirmPassword.hasError('required')) {
+          <mat-error>This field is required.</mat-error>
+        }
+        @if (confirmPassword.hasError('notMatch')) {
+          <mat-error>The password not match with the confirm password.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-raised-button color="primary" type="submit">Sing up</button>
+  </form>
+</mat-card>
