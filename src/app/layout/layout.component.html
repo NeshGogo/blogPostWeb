@@ -1,34 +1,48 @@
 <mat-drawer-container>
-  <mat-drawer mode="side" [opened]="desktopSize()">
-    <figure>
-      <img src="assets/logo.png" alt="App Loge" />
-    </figure>
-    <a
-      routerLink="/home"
-      routerLinkActive="mat-primary"
-      mat-button
-      color="none"
-      aria-label="Home navigation button"
-    >
-      <mat-icon>home</mat-icon> Home
-    </a>
-    <button
-      mat-button
-      color="none"
-      (click)="openPostCreationDialog()"
-      aria-label="Create new content button"
-    >
-      <mat-icon>add_box</mat-icon> Create
-    </button>
-    <a
-      routerLink="/profile/{{user()?.id || ''}}"
-      routerLinkActive="mat-primary"
-      mat-button
-      color="none"
-      aria-label="Profile navigation button"
-    >
-      <mat-icon>account_circle</mat-icon> Profile
-    </a>
+  <mat-drawer mode="side"  [opened]="desktopSize()">
+    <section class="drawer-content">
+      <div>
+        <figure>
+          <img src="assets/logo.png" alt="App Loge" />
+        </figure>
+        <a
+          routerLink="/home"
+          routerLinkActive="mat-primary"
+          mat-button
+          color="none"
+          aria-label="Home navigation button"
+        >
+          <mat-icon>home</mat-icon> Home
+        </a>
+        <button
+          mat-button
+          color="none"
+          (click)="openPostCreationDialog()"
+          aria-label="Create new content button"
+        >
+          <mat-icon>add_box</mat-icon> Create
+        </button>
+        <a
+          routerLink="/profile/{{user()?.id || ''}}"
+          routerLinkActive="mat-primary"
+          mat-button
+          color="none"
+          aria-label="Profile navigation button"
+        >
+          <mat-icon>account_circle</mat-icon> Profile
+        </a>
+      </div>
+      <div>
+        <button
+          mat-button
+          color="none"
+          (click)="logout()"
+          aria-label="Create new content button"
+        >
+          <mat-icon>logout</mat-icon> Log out
+        </button>
+      </div>
+    </section> 
   </mat-drawer>
   <mat-drawer-content>
     <section>

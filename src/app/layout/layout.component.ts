@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, output, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, output, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,7 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { map, debounceTime } from 'rxjs';
 import {
   MatDialog,
@@ -59,6 +59,7 @@ import { AiService } from '../services/ai.service';
 export class LayoutComponent implements OnInit {
   searchField = new FormControl('');
   options = signal<User[]>([]);
+  router = inject(Router);
   desktopSize = signal<boolean>(window.innerWidth >= 1024);
   user = signal<User | null>(null);
 
@@ -111,6 +112,11 @@ export class LayoutComponent implements OnInit {
         });
       });
     });
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 
   private _filter(value: string) {
