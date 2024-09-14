@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -24,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatDividerModule,
     MatInputModule,
+    RouterLink,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
