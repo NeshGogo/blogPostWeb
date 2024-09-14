@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,7 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { UserForCreation } from '../../models/User';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -34,6 +38,9 @@ export class SignUpComponent {
   public readonly logoUrl = 'assets/logo.png';
   hidePassword = signal(true);
   hideConfirmPassword = signal(true);
+  authService = inject(AuthService);
+  snackBar = inject(MatSnackBar);
+  route = inject(Router);
   signUpForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(50)]),
     userName: new FormControl('', [
@@ -55,6 +62,20 @@ export class SignUpComponent {
   signUp(event: Event) {
     event.preventDefault();
     event.stopPropagation();
+    if (this.signUpForm.invalid) return;
+    const userForCreation: UserForCreation = this.signUpForm
+      .value as UserForCreation;
+    this.authService
+      .signup(userForCreation)
+      .pipe(
+        switchMap((user) =>
+          this.authService.login(user.email, userForCreation.password)
+        )
+      )
+      .subscribe({
+        next: () => this.route.navigate(['/home']),
+        error: this.handleError,
+      });
   }
 
   onHidePassword(event: Event) {
@@ -65,6 +86,23 @@ export class SignUpComponent {
   onHideConfirmPassword(event: Event) {
     event.preventDefault();
     this.hideConfirmPassword.set(!this.hideConfirmPassword());
+  }
+
+  private handleError(err: any) {
+    ''.startsWith;
+    if (err?.status.toString().startsWith('4')) {
+      this.snackBar.open(err?.error?.message, undefined, {
+        duration: 5000,
+      });
+    } else {
+      this.snackBar.open(
+        'Oops! Something went wrong. Please give it another shot.',
+        undefined,
+        {
+          duration: 5000,
+        }
+      );
+    }
   }
 
   get email() {

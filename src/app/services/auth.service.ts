@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Token } from '../models/Token';
-import { User } from '../models/User';
+import { User, UserForCreation } from '../models/User';
 import { TokenService } from './token.service';
 import { tap } from 'rxjs';
 
@@ -31,6 +31,10 @@ export class AuthService {
         this.loadUser();
       })
     );
+  }
+
+  signup(user: UserForCreation) {
+    return this.http.post<User>(`${this.API}/register`, user);
   }
 
   logout() {

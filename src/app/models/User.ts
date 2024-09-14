@@ -6,3 +6,10 @@ export interface User {
   bio?: string;
   userImageUrl?: string;
 }
+
+export interface UserForCreation{
+  name: string;
+  email: string;
+  userName: string;
+  password: string;
+}
